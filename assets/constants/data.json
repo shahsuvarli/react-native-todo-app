@@ -1,0 +1,12 @@
+[
+  {
+    "id": 0,
+    "name": "Shopping",
+    "items": [
+      { "id": 0, "name": "Dyson" },
+      { "id": 1, "name": "Ring" }
+    ]
+  },
+  { "id": 1, "name": "Work", "items": [] },
+  { "id": 2, "name": "Housework", "items": [] }
+]
