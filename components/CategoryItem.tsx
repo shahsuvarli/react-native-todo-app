@@ -11,7 +11,7 @@ export default function CategoryItem({ item }: any) {
     await deleteDoc(doc(db, "category", item.id));
   };
   const toggleItem = async () => {
-    router.push(`/categories/${item.name}`);
+    router.push(`/categories/${item.id}`);
   };
   return (
     <TouchableOpacity onPress={toggleItem} style={styles.btnContainer}>

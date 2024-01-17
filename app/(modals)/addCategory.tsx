@@ -11,7 +11,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { useRouter } from "expo-router";
 
-export default function Page() {
+export default function Page({route}:any) {
+  console.log(route, 'route')
   const [text, setText] = useState("");
   const router = useRouter();
   const submitCategory = () => {
