@@ -68,6 +68,18 @@ function RootLayoutNav() {
             ),
           }}
         />
+        <Stack.Screen
+          name="(modals)/addCategory"
+          options={{
+            title: "Add Category",
+            presentation: "modal",
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons name="close-outline" size={28} />
+              </TouchableOpacity>
+            ),
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

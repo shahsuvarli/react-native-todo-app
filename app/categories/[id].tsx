@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Button, Pressable } from "react-native";
+import { View, FlatList, Pressable, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import data from "../../assets/constants/data.json";
@@ -20,14 +20,7 @@ export default function Page() {
     setPagetData(newData?.items);
   }, []);
   return (
-    <View
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
       <FlatList
         data={pageData}
         renderItem={({ item }) => <ListItem item={item} />}
@@ -36,17 +29,28 @@ export default function Page() {
       />
       <Pressable
         onPress={() => router.push("/(modals)/addItem")}
-        style={{
-          backgroundColor: "green",
-          width: 50,
-          height: 50,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        style={styles.btnContainer}
       >
-        <Ionicons name="add-outline" size={35} color={"white"} />
+        <Ionicons name="add-outline" size={35} color={"#fff"} />
       </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnContainer: {
+    backgroundColor: "green",
+    width: 50,
+    height: 50,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+  },
+});
