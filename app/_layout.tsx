@@ -57,7 +57,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="categories/[id]" />
         <Stack.Screen
-          name="(modals)/addItem"
+          name="(modals)/add/[id]"
           options={{
             title: "Add New Item",
             presentation: "modal",

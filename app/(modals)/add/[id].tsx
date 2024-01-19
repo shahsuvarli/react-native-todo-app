@@ -8,17 +8,18 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { db } from "../../../firebaseConfig";
 
-export default function Page({ navigation, route }: any) {
-  console.log(navigation, route, 'dat')
+export default function Page() {
   const params = useLocalSearchParams();
-  // console.log(params);
   const [text, setText] = useState("");
   const router = useRouter();
   const submitCategory = () => {
-    addDoc(collection(db, "category"), { name: text, active: true });
+    addDoc(collection(db, `category/${params.id}/items`), {
+      name: text,
+      active: true,
+    });
     router.back();
   };
   return (

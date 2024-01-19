@@ -4,49 +4,42 @@ import {
   Pressable,
   StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import ListItem from "../../components/ListItem";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
-export default function Page({ route }: any) {
-  console.log("wefwefwe");
-  console.log(route, "dadededta");
+interface PageData {
+  id: number;
+  name: string;
+}
+export default function Page() {
   const router = useRouter();
-  interface PageData {
-    id: number;
-    name: string;
-  }
+  const { id } = useLocalSearchParams();
+  const [itemId, setItemId] = useState<string | string[] | null>(id);
+  const navigation = useNavigation();
   const [pageData, setPagetData] = useState<PageData[] | undefined>([]);
-  const nav = useNavigation();
-  const params = useLocalSearchParams();
-  // console.log(nav, 'params')
   useEffect(() => {
-    onSnapshot(collection(db, `category/${params.id}/items`), () => {
-      console.log("samplee");
-      async () => {
+    console.log(id, "my name");
+    onSnapshot(
+      collection(db, `category/${itemId}/items`),
+      async (): Promise<any> => {
         const items: any = [];
+        console.log("efwefw");
         const docRef = await getDocs(
-          collection(db, `category/${params.id}/items`)
+          collection(db, `category/${itemId}/items`)
         );
         docRef.forEach((item) => {
-          console.log(item.data());
           items.push({ ...item.data(), id: item.id });
         });
-      };
-    })();
-    // navigation.setOptions({ title: newData?.name });
-    // setPagetData(newData?.items);
+        console.log(items, "itemmsss");
+        setPagetData(items);
+      }
+    )();
+    navigation.setOptions({ title: id });
   }, []);
   return (
     <SafeAreaView
@@ -73,7 +66,7 @@ export default function Page({ route }: any) {
         }}
       >
         <Pressable
-          onPress={() => router.push("/(modals)/addItem")}
+          onPress={() => router.push(`/(modals)/add/${itemId}`)}
           style={styles.btnContainer}
         >
           <Ionicons name="add-outline" size={35} color={"#fff"} />

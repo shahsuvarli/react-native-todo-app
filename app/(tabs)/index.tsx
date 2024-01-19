@@ -16,15 +16,13 @@ export default function TabOneScreen() {
   const [categories, setCategories] = useState([]);
   const router = useRouter();
   useEffect(() => {
-    onSnapshot(collection(db, "category"), (): any => {
-      (async () => {
-        const categories: any = [];
-        const docRef = await getDocs(collection(db, "category"));
-        docRef.forEach((item) => {
-          categories.push({ ...item.data(), id: item.id });
-        });
-        setCategories(categories);
-      })();
+    onSnapshot(collection(db, "category"), async (): Promise<any> => {
+      const categories: any = [];
+      const docRef = await getDocs(collection(db, "category"));
+      docRef.forEach((item) => {
+        categories.push({ ...item.data(), id: item.id });
+      });
+      setCategories(categories);
     });
   }, []);
   return (
@@ -37,7 +35,7 @@ export default function TabOneScreen() {
         justifyContent: "space-evenly",
       }}
     >
-      <View style={{ height: "70%", backgroundColor: "dodgerblue" }}>
+      <View style={{ height: "70%" }}>
         <FlatList
           nestedScrollEnabled
           data={categories}
