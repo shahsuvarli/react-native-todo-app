@@ -20,7 +20,9 @@ export default function TabOneScreen() {
       const categories: any = [];
       const docRef = await getDocs(collection(db, "category"));
       docRef.forEach((item) => {
-        categories.push({ ...item.data(), id: item.id });
+        if (item.data().active) {
+          categories.push({ ...item.data(), id: item.id });
+        }
       });
       setCategories(categories);
     });
@@ -28,19 +30,24 @@ export default function TabOneScreen() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#ffffffdb",
+        backgroundColor: "#000",
+        // backgroundColor: "#ffffffdb",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
       }}
     >
-      <View style={{ height: "70%" }}>
+      <View
+        style={{
+          height: "70%",
+        }}
+      >
         <FlatList
           nestedScrollEnabled
           data={categories}
           renderItem={(item) => <CategoryItem item={item.item} />}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: any) => item.id}
         />
       </View>
       <View style={styles.container}>
@@ -64,7 +71,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   btnContainer: {
-    backgroundColor: "dodgerblue",
+    backgroundColor: "#000",
+    borderColor: "#fff",
+    borderStyle: "solid",
+    borderWidth: 0.7,
     width: 70,
     height: 70,
     display: "flex",

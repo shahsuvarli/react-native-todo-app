@@ -13,7 +13,7 @@ import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 interface PageData {
-  id: number;
+  id: string;
   name: string;
 }
 export default function Page() {
@@ -22,25 +22,30 @@ export default function Page() {
   const [itemId, setItemId] = useState<string | string[] | null>(id);
   const navigation = useNavigation();
   const [pageData, setPagetData] = useState<PageData[] | undefined>([]);
+
+  const addItem = () => {
+    router.push(`/(modals)/add/${itemId}`);
+  };
+
   useEffect(() => {
-    console.log(id, "my name");
     onSnapshot(
       collection(db, `category/${itemId}/items`),
       async (): Promise<any> => {
-        const items: any = [];
-        console.log("efwefw");
+        const todos: any = [];
         const docRef = await getDocs(
           collection(db, `category/${itemId}/items`)
         );
         docRef.forEach((item) => {
-          items.push({ ...item.data(), id: item.id });
+          // if (item.data().active) {
+            todos.push({ ...item.data(), id: item.id });
+          // }
         });
-        console.log(items, "itemmsss");
-        setPagetData(items);
+        setPagetData(todos);
+        navigation.setOptions({ title: itemId });
       }
-    )();
-    navigation.setOptions({ title: id });
+    );
   }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -48,14 +53,14 @@ export default function Page() {
         display: "flex",
         justifyContent: "space-evenly",
         flexDirection: "column",
-        backgroundColor: "#fff",
+        backgroundColor: "#000",
       }}
     >
       <View style={styles.container}>
         <FlatList
           data={pageData}
-          renderItem={({ item }) => <ListItem item={item} />}
-          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => <ListItem item={item} id={id} />}
+          keyExtractor={(item) => item.id}
         />
       </View>
       <View
@@ -65,10 +70,7 @@ export default function Page() {
           alignItems: "center",
         }}
       >
-        <Pressable
-          onPress={() => router.push(`/(modals)/add/${itemId}`)}
-          style={styles.btnContainer}
-        >
+        <Pressable onPress={addItem} style={styles.btnContainer}>
           <Ionicons name="add-outline" size={35} color={"#fff"} />
         </Pressable>
       </View>
@@ -81,7 +83,10 @@ const styles = StyleSheet.create({
     height: "60%",
   },
   btnContainer: {
-    backgroundColor: "green",
+    backgroundColor: "#000",
+    borderColor: "#fff",
+    borderStyle: "solid",
+    borderWidth: 0.7,
     width: 70,
     height: 70,
     display: "flex",

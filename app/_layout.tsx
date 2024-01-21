@@ -55,15 +55,22 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="categories/[id]" />
+        <Stack.Screen
+          name="categories/[id]"
+          options={{ presentation: "modal" }}
+        />
         <Stack.Screen
           name="(modals)/add/[id]"
           options={{
             title: "Add New Item",
             presentation: "modal",
-            headerLeft: () => (
+            headerRight: () => (
               <TouchableOpacity onPress={() => router.back()}>
-                <Ionicons name="close-outline" size={28} />
+                <Ionicons
+                  name="chevron-down-outline"
+                  size={28}
+                  color={"#fff"}
+                />
               </TouchableOpacity>
             ),
           }}
@@ -73,9 +80,13 @@ function RootLayoutNav() {
           options={{
             title: "Add Category",
             presentation: "modal",
-            headerLeft: () => (
+            headerRight: () => (
               <TouchableOpacity onPress={() => router.back()}>
-                <Ionicons name="close-outline" size={28} />
+                <Ionicons
+                  name="chevron-down-outline"
+                  size={28}
+                  color={"#fff"}
+                />
               </TouchableOpacity>
             ),
           }}
