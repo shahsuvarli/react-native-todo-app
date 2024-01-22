@@ -1,29 +1,33 @@
 import {
   View,
-  Text,
   TextInput,
   Pressable,
   StyleSheet,
-  SafeAreaView,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { db } from "../../../firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Page() {
-  const params = useLocalSearchParams();
+  const navigation = useNavigation();
+  const { id, name } = useLocalSearchParams();
   const [text, setText] = useState("");
   const router = useRouter();
   const submitCategory = () => {
-    addDoc(collection(db, `category/${params.id}/items`), {
+    addDoc(collection(db, `category/${id}/items`), {
       name: text,
       active: true,
     });
     router.back();
   };
+
+  useEffect(() => {
+    navigation.setOptions({ title: name });
+  }, []);
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View
@@ -44,7 +48,11 @@ export default function Page() {
             placeholder="Item"
             placeholderTextColor={"#75717172"}
           />
-          <Pressable style={styles.btnContainer} onPress={submitCategory}>
+          <Pressable
+            style={styles.btnContainer}
+            onPress={submitCategory}
+            disabled={text ? false : true}
+          >
             <Ionicons name="send" size={20} color={"#fff"} />
           </Pressable>
         </View>
@@ -70,6 +78,7 @@ const styles = StyleSheet.create({
     margin: 20,
     borderColor: "#fff",
     color: "#fff",
+    marginRight: 60,
   },
   btnContainer: {
     backgroundColor: "#000",
@@ -83,6 +92,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
+    position: "absolute",
+    right: 0,
   },
 
   textStyle: {

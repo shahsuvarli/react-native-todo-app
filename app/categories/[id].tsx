@@ -16,15 +16,17 @@ interface PageData {
   id: string;
   name: string;
 }
+
 export default function Page() {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
+  const { id, name } = useLocalSearchParams();
   const [itemId, setItemId] = useState<string | string[] | null>(id);
   const navigation = useNavigation();
   const [pageData, setPagetData] = useState<PageData[] | undefined>([]);
 
   const addItem = () => {
     router.push(`/(modals)/add/${itemId}`);
+    router.setParams({ id: itemId, name } as any);
   };
 
   useEffect(() => {
@@ -36,12 +38,11 @@ export default function Page() {
           collection(db, `category/${itemId}/items`)
         );
         docRef.forEach((item) => {
-          // if (item.data().active) {
-            todos.push({ ...item.data(), id: item.id });
-          // }
+          todos.push({ ...item.data(), id: item.id });
         });
-        setPagetData(todos);
-        navigation.setOptions({ title: itemId });
+        const sortedTodos = todos.sort((a: any, b: any) => b.active - a.active);
+        setPagetData(sortedTodos);
+        navigation.setOptions({ title: name });
       }
     );
   }, []);

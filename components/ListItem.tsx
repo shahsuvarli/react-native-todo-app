@@ -1,11 +1,10 @@
-import { Text, TouchableOpacity, StyleSheet, Pressable } from "react-native";
-import React, { useState } from "react";
+import { Text, TouchableOpacity, Pressable, View } from "react-native";
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 export default function ListItem({ item, id }: any) {
-  const [active, setActive] = useState(item.active);
   const markAsDone = async () => {
     await updateDoc(doc(db, "category", id, "items", item.id), {
       active: !item.active,
@@ -17,8 +16,6 @@ export default function ListItem({ item, id }: any) {
         backgroundColor: item.active ? "#fff" : "#000",
         marginVertical: 5,
         display: "flex",
-        padding: 17,
-        // borderRadius: item.active ? 100 0,
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
@@ -27,19 +24,32 @@ export default function ListItem({ item, id }: any) {
         borderStyle: "solid",
       }}
     >
-      <Text
-        style={{
-          fontSize: 20,
-          color: item.active ? "#000" : "#c4c2c2",
-          fontStyle: item.active ? "normal" : "italic",
-          textDecorationLine: item.active ? "none" : "line-through",
-        }}
-      >
-        {item.name}
-      </Text>
+      <View style={{ width: "85%", padding: 15 }}>
+        <Text
+          style={{
+            fontSize: 20,
+            color: item.active ? "#000" : "#c4c2c2",
+            fontStyle: item.active ? "normal" : "italic",
+            textDecorationLine: item.active ? "none" : "line-through",
+            lineHeight: 30,
+            width: "95%",
+          }}
+        >
+          {item.name}
+        </Text>
+      </View>
+
       <Pressable
         onPress={markAsDone}
-        style={{ position: "absolute", right: 15 }}
+        style={{
+          height: "100%",
+          width: "20%",
+          position: "absolute",
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <Ionicons
           name={item.active ? "checkmark-outline" : "checkmark-done-outline"}
@@ -50,5 +60,3 @@ export default function ListItem({ item, id }: any) {
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({});

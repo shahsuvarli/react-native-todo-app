@@ -13,7 +13,9 @@ import {
   doc,
   getDocs,
   onSnapshot,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
@@ -23,24 +25,31 @@ export default function CategoryItem({ item }: any) {
 
   useEffect(() => {
     onSnapshot(collection(db, `category/${item.id}/items`), async () => {
-      const docRef = await getDocs(collection(db, `category/${item.id}/items`));
+      const q = query(
+        collection(db, `category/${item.id}/items`),
+        where("active", "==", true)
+      );
+      const data = await getDocs(q);
       let newCounter = 0;
-      docRef.forEach((item): any => {
-        if (item.data().active) {
-          newCounter = newCounter + 1;
-        }
+      data.forEach(() => {
+        newCounter = newCounter + 1;
       });
       setCounter(newCounter);
     });
   }, []);
 
   const deleteCategory = async () => {
-    await updateDoc(doc(db, "category", item.id), { active: false });
+    await updateDoc(doc(db, "category", item.id), {
+      active: item.active ? false : null,
+    });
   };
 
   return (
     <TouchableOpacity
-      onPress={() => router.push(`/categories/${item.id}`)}
+      onPress={() => {
+        router.push(`/categories/${item.id}`);
+        router.setParams({ id: item.id, name: item.name });
+      }}
       style={{
         backgroundColor: counter ? "#fff" : "#b0adad46",
         marginVertical: 5,

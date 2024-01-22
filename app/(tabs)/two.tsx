@@ -1,30 +1,26 @@
-import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 import CategoryItem from "../../components/CategoryItem";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 export default function TabOneScreen() {
   const [categories, setCategories] = useState([]);
-  const router = useRouter();
   useEffect(() => {
     onSnapshot(collection(db, "category"), async (): Promise<any> => {
-      const categories: any = [];
-      const docRef = await getDocs(collection(db, "category"));
-      docRef.forEach((item) => {
-        if (!item.data().active) {
-          categories.push({ ...item.data(), id: item.id });
-        }
+      const newCategories: any = [];
+      const q = query(collection(db, "category"), where("active", "==", false));
+      const data = await getDocs(q);
+      data.forEach((item) => {
+        newCategories.push({ ...item.data(), id: item.id });
       });
-      setCategories(categories);
+      setCategories(newCategories);
     });
   }, []);
   return (
@@ -33,9 +29,10 @@ export default function TabOneScreen() {
         backgroundColor: "#000",
         display: "flex",
         flexDirection: "column",
+        height: "100%",
       }}
     >
-      <View>
+      <View style={{ marginTop: 45 }}>
         <FlatList
           nestedScrollEnabled
           data={categories}

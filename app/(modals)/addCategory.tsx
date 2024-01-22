@@ -38,7 +38,11 @@ export default function Page() {
             placeholder="Category"
             placeholderTextColor={"#75717172"}
           />
-          <Pressable style={styles.btnContainer} onPress={submitCategory}>
+          <Pressable
+            style={styles.btnContainer}
+            onPress={submitCategory}
+            disabled={text ? false : true}
+          >
             <Ionicons name="send" size={20} color={"#fff"} />
           </Pressable>
         </View>
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 70,
+    marginBottom: 60,
   },
   inputContainer: {
     height: 100,
@@ -64,6 +68,7 @@ const styles = StyleSheet.create({
     margin: 20,
     borderColor: "#fff",
     color: "#fff",
+    marginRight:50
   },
   btnContainer: {
     backgroundColor: "#000",
@@ -77,6 +82,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
+    position:'absolute',
+    right:0
   },
 
   textStyle: {

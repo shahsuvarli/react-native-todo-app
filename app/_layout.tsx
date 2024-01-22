@@ -57,12 +57,23 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="categories/[id]"
-          options={{ presentation: "modal" }}
+          options={{
+            presentation: "modal",
+            headerRight: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons
+                  name="chevron-down-outline"
+                  size={28}
+                  color={"#fff"}
+                />
+              </TouchableOpacity>
+            ),
+          }}
         />
         <Stack.Screen
           name="(modals)/add/[id]"
           options={{
-            title: "Add New Item",
+            title: "New to-do",
             presentation: "modal",
             headerRight: () => (
               <TouchableOpacity onPress={() => router.back()}>
@@ -78,7 +89,7 @@ function RootLayoutNav() {
         <Stack.Screen
           name="(modals)/addCategory"
           options={{
-            title: "Add Category",
+            title: "New category",
             presentation: "modal",
             headerRight: () => (
               <TouchableOpacity onPress={() => router.back()}>

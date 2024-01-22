@@ -9,7 +9,13 @@ import CategoryItem from "../../components/CategoryItem";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 export default function TabOneScreen() {
@@ -17,21 +23,19 @@ export default function TabOneScreen() {
   const router = useRouter();
   useEffect(() => {
     onSnapshot(collection(db, "category"), async (): Promise<any> => {
-      const categories: any = [];
-      const docRef = await getDocs(collection(db, "category"));
-      docRef.forEach((item) => {
-        if (item.data().active) {
-          categories.push({ ...item.data(), id: item.id });
-        }
+      const newCategories: any = [];
+      const q = query(collection(db, "category"), where("active", "==", true));
+      const data = await getDocs(q);
+      data.forEach((item) => {
+        newCategories.push({ ...item.data(), id: item.id });
       });
-      setCategories(categories);
+      setCategories(newCategories);
     });
   }, []);
   return (
     <SafeAreaView
       style={{
         backgroundColor: "#000",
-        // backgroundColor: "#ffffffdb",
         height: "100%",
         display: "flex",
         flexDirection: "column",
