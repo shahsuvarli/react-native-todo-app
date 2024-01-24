@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
 import CategoryItem from "../../components/CategoryItem";
 import { Ionicons } from "@expo/vector-icons";
@@ -54,6 +55,7 @@ export default function TabOneScreen() {
           keyExtractor={(item: any) => item.id}
         />
       </View>
+
       <View style={styles.container}>
         <Pressable
           onPress={() => {
