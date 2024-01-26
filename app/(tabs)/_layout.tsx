@@ -1,8 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
+import { Tabs, useRouter } from "expo-router";
+import { TouchableOpacity, useColorScheme } from "react-native";
 
 import Colors from "../../constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -13,6 +14,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -26,6 +28,11 @@ export default function TabLayout() {
           title: "Open",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="folder-open" color={color} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={() => router.push("..")}>
+              <Ionicons name="log-out-outline" size={28} color={"#fff"} />
+            </TouchableOpacity>
           ),
         }}
       />
