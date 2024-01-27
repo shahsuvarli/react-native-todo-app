@@ -1,5 +1,5 @@
 {
-  "name": "react-native-todo-app",
+  "name": "tudu",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.1.9",
     "babel-preset-expo": "^10.0.1",
     "babel-preset-react-native": "^4.0.1",
+    "eas-cli": "^7.1.1",
     "expo": "^50.0.3",
     "expo-font": "~11.10.2",
     "expo-linking": "~6.2.2",
